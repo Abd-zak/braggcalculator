@@ -14,18 +14,20 @@ import datetime
 #######################################################################
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
+import os
 
-# Manually set font path
-symbola_font_path = "/usr/share/fonts/truetype/Symbola.ttf"
+# Use the font from the repository
+symbola_font_path = os.path.join(os.path.dirname(__file__), "fonts", "Symbola.ttf")
 
-if not fm.findfont(fm.FontProperties(fname=symbola_font_path)):
-    raise FileNotFoundError(f"⚠️ Font not found at: {symbola_font_path}")
+# Ensure the font file exists before loading
+if os.path.exists(symbola_font_path):
+    prop = fm.FontProperties(fname=symbola_font_path)
+    plt.rcParams["font.family"] = prop.get_name()
+    print(f"✅ Loaded font: {prop.get_name()} from {symbola_font_path}")
+else:
+    print("⚠️ Warning: Symbola font not found, using default font.")
 
-# Load font
-prop = fm.FontProperties(fname=symbola_font_path)
-plt.rcParams["font.family"] = prop.get_name()
 
-print(f"✅ Loaded font: {prop.get_name()} from {symbola_font_path}")
 #######################################################################
 #######################################################################
 
