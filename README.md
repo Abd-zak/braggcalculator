@@ -1,19 +1,21 @@
-# 🎈 Blank app template
+# 🔬 Bragg Angle Calculator
 
-A simple Streamlit app template for you to modify!
+## 📖 Overview
+The **Bragg Angle Calculator** is a web application built using **Streamlit** to compute theoretical and experimental Bragg angles in **X-ray diffraction (XRD)** studies.
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blank-app-template.streamlit.app/)
+## 🛠 Features
+- **Compute Bragg angles** based on energy and lattice parameters.
+- **Predict experimental Bragg angles** from measured reflections.
+- **Visualize diffraction data** with plots.
+- **Download computed results** for further study.
 
-### How to run it on your own machine
+## 🚀 Installation
 
-1. Install the requirements
+### Prerequisites
+Ensure you have **Python 3.8+** installed.
 
-   ```
-   $ pip install -r requirements.txt
-   ```
-
-2. Run the app
-
-   ```
-   $ streamlit run streamlit_app.py
-   ```
+### Setup Instructions
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/abd_zak/braggcalculator.git
+   cd braggcalculator
