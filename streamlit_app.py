@@ -148,8 +148,35 @@ def calculate_bragg_angles(energy_keV, lattice_param, num_reflections, miller_in
     sin_sq_theta = [round(np.sin(np.radians(t))**2, 4) if t else None for t in theta]
     lambda_by_2d = [round(wavelength / (2 * d), 4) if d else None for d in d_values]
 
-    # Mock intensity values (Replace with real intensity calculation if available)
-    intensities = [round(100 * (np.random.rand() * 0.5 + 0.5), 2) for _ in reflections]
+    # Calculate Intensity with physical factors
+    intensities = []
+    
+    for i, (hkl, d) in enumerate(zip(reflections, d_values)):
+        if theta[i] is None:
+            intensities.append(None)
+            continue
+        
+        theta_rad = np.radians(theta[i])
+        
+        # Lorentz-Polarization Factor (LPF)
+        LPF = (1 + np.cos(2 * theta_rad) ** 2) / (2 * np.sin(theta_rad) ** 2 * np.cos(theta_rad))
+        
+        # Mock atomic form factor (replace with real values)
+        atomic_f = atomic_scattering_factors.get(hkl, 1)  # Assume f = 1 if unknown
+        
+        # Structure Factor (F_hkl)
+        F_hkl = atomic_f  # Assuming a simple model, needs full summation for complex materials
+        
+        # Mock Debye-Waller Factor (Assume negligible if unknown)
+        Debye_Waller = np.exp(-0.02 * (np.sin(theta_rad) / wavelength) ** 2)
+        
+        # Multiplicity Factor (approximate estimation)
+        M_hkl = 1 + (hkl.count("0") == 0) * 2  # Approximate estimate (use tables for real values)
+        
+        # Compute intensity
+        intensity = M_hkl * (F_hkl ** 2) * LPF * Debye_Waller
+        intensities.append(round(intensity, 2))
+
 
     return {
     "Miller Indices (hkl)": reflections,
