@@ -51,10 +51,10 @@ with col2:
         **Bragg’s Law** is a fundamental principle in X-ray crystallography, describing how X-rays are diffracted by a crystal lattice:
 
         \[
-        n\lambda = 2d \sin \theta
+        λ= 2d sin θ
         \]
 
-        where:
+        where:λ
         - **n** is the order of reflection (typically 1 for most measurements),
         - **λ** is the wavelength of the incident X-ray beam,
         - **d** is the spacing between atomic planes in the crystal lattice,
@@ -148,45 +148,13 @@ def calculate_bragg_angles(energy_keV, lattice_param, num_reflections, miller_in
     sin_sq_theta = [round(np.sin(np.radians(t))**2, 4) if t else None for t in theta]
     lambda_by_2d = [round(wavelength / (2 * d), 4) if d else None for d in d_values]
 
-    # Calculate Intensity with physical factors
-    intensities = []
-    
-    for i, (hkl, d) in enumerate(zip(reflections, d_values)):
-        if theta[i] is None:
-            intensities.append(None)
-            continue
-        
-        theta_rad = np.radians(theta[i])
-        
-        # Lorentz-Polarization Factor (LPF)
-        LPF = (1 + np.cos(2 * theta_rad) ** 2) / (2 * np.sin(theta_rad) ** 2 * np.cos(theta_rad))
-        
-        # Mock atomic form factor (replace with real values)
-        atomic_f = atomic_scattering_factors.get(hkl, 1)  # Assume f = 1 if unknown
-        
-        # Structure Factor (F_hkl)
-        F_hkl = atomic_f  # Assuming a simple model, needs full summation for complex materials
-        
-        # Mock Debye-Waller Factor (Assume negligible if unknown)
-        Debye_Waller = np.exp(-0.02 * (np.sin(theta_rad) / wavelength) ** 2)
-        
-        # Multiplicity Factor (approximate estimation)
-        M_hkl = 1 + (hkl.count("0") == 0) * 2  # Approximate estimate (use tables for real values)
-        
-        # Compute intensity
-        intensity = M_hkl * (F_hkl ** 2) * LPF * Debye_Waller
-        intensities.append(round(intensity, 2))
-
-
     return {
     "Miller Indices (hkl)": reflections,
     "d-spacing (Å)": [round(d * 1e10, 4) for d in d_values],  
     "θ (°)": theta,  
     "2θ (°)": two_theta,  
     "sin²(θ)": sin_sq_theta,
-    "λ / 2d": lambda_by_2d,
-    "Intensity (%)": intensities
-}
+    "λ / 2d": lambda_by_2d}
 
 
 
